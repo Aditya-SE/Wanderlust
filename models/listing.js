@@ -8,13 +8,14 @@ let listingSchema = new Schema({
   },
   description: String,
   image: {
-    type: String,
-    default:
-      "https://unsplash.com/photos/vagator-or-ozran-beach-aerial-panoramic-view-in-north-goa-india-SI9OBANtEx0",
-    set: (v) =>
-      v === ""
-        ? "https://unsplash.com/photos/vagator-or-ozran-beach-aerial-panoramic-view-in-north-goa-india-SI9OBANtEx0"
-        : v,
+    url: {
+      type: String,
+      default: "https://images.unsplash.com/photo-1501785888041-af3ef285b470",
+    },
+    filename: {
+      type: String,
+      default: "listingimage",
+    },
   },
   price: Number,
   location: String,
