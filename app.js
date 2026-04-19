@@ -7,6 +7,7 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const wrapAsync = require("./utils/wrapAsync.js");
 const ExpressError = require("./utils/ExpressError.js");
+const { listingSchema } = require("./schema.js");
 
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
@@ -30,6 +31,17 @@ main()
 app.get("/", (req, res) => {
   res.send("hey, i'm root");
 });
+
+const validateListing = (req, res, next) => {
+  let { error } = listingSchema.validate(req.body);
+
+  if (error) {
+    let errMsg = error.details.map((el) => el.message).join(",");
+    throw new ExpressError(400, errMsg);
+  } else {
+    next();
+  }
+};
 
 //index route
 app.get(
@@ -58,7 +70,8 @@ app.get(
 //create route
 app.post(
   "/listings",
-  wrapAsync(async (req, res) => {
+  validateListing,
+  wrapAsync(async (req, res, next) => {
     const newListing = new listing(req.body.Listing);
     await newListing.save();
     res.redirect("/listings");
@@ -78,6 +91,7 @@ app.get(
 //update route
 app.put(
   "/listings/:id",
+  validateListing,
   wrapAsync(async (req, res) => {
     let { id } = req.params;
     await listing.findByIdAndUpdate(id, { ...req.body.Listing });
@@ -109,12 +123,13 @@ app.delete(
 // });
 
 app.use((req, res, next) => {
-  next(new ExpressError(404, "Page not found"));
+  next(new ExpressError(404, "Page not found!"));
 });
 
 app.use((err, req, res, next) => {
   let { statusCode = 500, message = "something went wrong" } = err;
-  res.status(statusCode).send(message);
+  res.status(statusCode).render("error.ejs", { message });
+  // res.status(statusCode).send(message);
 });
 
 app.listen(8080, () => {
