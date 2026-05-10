@@ -44,7 +44,7 @@ const validateListing = (req, res, next) => {
   }
 };
 
-const validateReview= (req, res, next) => {
+const validateReview = (req, res, next) => {
   let { error } = reviewSchema.validate(req.body);
   if (error) {
     let errMsg = error.details.map((el) => el.message).join(",");
@@ -73,7 +73,7 @@ app.get(
   "/listings/:id",
   wrapAsync(async (req, res) => {
     let { id } = req.params;
-    const listings = await Listing.findById(id);
+    const listings = await Listing.findById(id).populate("reviews");
     res.render("listings/show.ejs", { listings });
   })
 );
@@ -123,17 +123,24 @@ app.delete(
 
 //Review
 //Post route
-app.post("/listings/:id/reviews", validateReview, wrapAsync(async (req, res) => {
-  let listing = await Listing.findById(req.params.id);
-  let newReview = new Review(req.body.review);
+app.post(
+  "/listings/:id/reviews",
+  validateReview,
+  wrapAsync(async (req, res) => {
+    let listing = await Listing.findById(req.params.id);
+    let newReview = new Review(req.body.review);
 
-  listing.reviews.push(newReview);
+    listing.reviews.push(newReview);
 
-  await listing.save();
-  await newReview.save();
+    await listing.save();
+    await newReview.save();
 
-  res.redirect(`/listings/${listing._id}`);
-}));
+    res.redirect(`/listings/${listing._id}`);
+  })
+);
+
+//delete Review route
+
 
 // app.get("/listentesting", async (req, res) => {
 //   let sampleListing = new listing({
