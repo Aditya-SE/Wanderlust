@@ -1,4 +1,4 @@
-# 🏡 Wanderlust - Airbnb Clone (Work in Progress 🚧)
+# Wanderlust - Airbnb Clone (Work in Progress 🚧)
 
 ## 📌 Project Status
 🚧 This project is currently under development.
