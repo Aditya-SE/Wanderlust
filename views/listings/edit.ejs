@@ -31,10 +31,17 @@
 
         <div class="mb-3">
           <label for="image" class="form-label">Image Link</label>
+          <!-- <input
+            type="text"
+            value="<%= listings.image %>"
+            name="Listing[image]"
+            class="form-control"
+            required
+          /> -->
           <input
             type="text"
             value="<%= listings.image.url %>"
-            name="Listing[image]"
+            name="Listing[image][url]"
             class="form-control"
             required
           />
@@ -85,4 +92,3 @@
     </div>
   </div>
 </body>
-
