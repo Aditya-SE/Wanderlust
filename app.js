@@ -35,19 +35,6 @@ app.get("/", (req, res) => {
 app.use("/listings", listings);
 app.use("/listings/:id/reviews", reviews);
 
-// app.get("/listentesting", async (req, res) => {
-//   let sampleListing = new listing({
-//     title: "My New Villa",
-//     description: "By the beach",
-//     price: 1200,
-//     location: "Calangute, Goa",
-//     country: "India",
-//   });
-//   await sampleListing.save();
-//   console.log("sample is save");
-//   res.send("data saved in db");
-// });
-
 app.use((req, res, next) => {
   next(new ExpressError(404, "Page not found!"));
 });

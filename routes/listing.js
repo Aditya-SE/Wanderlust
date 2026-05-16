@@ -40,11 +40,15 @@ router.get(
 );
 
 //create route
+//create route
 router.post(
   "/",
   validateListing,
   wrapAsync(async (req, res, next) => {
-    const newListing = new Listing(req.body.Listing);
+    const newListing = new Listing(req.body.listing);
+    if (newListing.image.url === "") {
+      newListing.image.url = undefined;
+    }
     await newListing.save();
     res.redirect("/listings");
   })
@@ -66,7 +70,7 @@ router.put(
   validateListing,
   wrapAsync(async (req, res) => {
     let { id } = req.params;
-    await Listing.findByIdAndUpdate(id, { ...req.body.Listing });
+    await Listing.findByIdAndUpdate(id, { ...req.body.listing });
     res.redirect(`/listings/${id}`);
   })
 );
