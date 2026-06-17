@@ -50,6 +50,7 @@ router.post(
       newListing.image.url = undefined;
     }
     await newListing.save();
+    req.flash("success", "New Listing Created!");
     res.redirect("/listings");
   })
 );
