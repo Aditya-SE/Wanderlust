@@ -59,9 +59,7 @@ app.use((req, res, next) => {
 //   res.send(registeredUser);
 // });
 
-async function main() {
-  await mongoose.connect("mongodb://127.0.0.1:27017/wanderlust");
-}
+const MONGO_URL = "mongodb://127.0.0.1:27017/wanderlust";
 
 main()
   .then((result) => {
@@ -70,6 +68,11 @@ main()
   .catch((err) => {
     console.log(err);
   });
+  
+async function main() {
+  await mongoose.connect(MONGO_URL);
+}
+
 
 app.get("/", (req, res) => {
   res.send("hey, i'm root");
