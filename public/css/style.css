@@ -57,7 +57,7 @@ body {
 }
 
 /* cards */
-.listing-card{
+.listing-card {
   border: none !important;
   margin-bottom: 2rem;
 }
@@ -110,4 +110,10 @@ body {
 .show-card {
   padding-left: 0;
   padding-right: 0;
+}
+
+/* map */
+#map {
+  width: 93vh;
+  height: 400px;
 }
