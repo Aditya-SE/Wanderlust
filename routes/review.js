@@ -5,7 +5,6 @@ const ExpressError = require("../utils/ExpressError.js");
 const {
   validateReview,
   isLoggedIn,
-  isReviewAuthor,
 } = require("../middleware.js");
 const Review = require("../models/review.js");
 const Listing = require("../models/listing.js");
@@ -24,7 +23,7 @@ router.post(
 router.delete(
   "/:reviewId",
   isLoggedIn,
-  isReviewAuthor,
+  reviewController.isReviewAuthor,
   wrapAsync(reviewController.destroyReview)
 );
 
