@@ -1,18 +1,11 @@
 <% layout("/layouts/boilerplate") %>
 <style>
-  #filters {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-  }
-  .first {
-    margin-left: 3.5rem;
-  }
   .filter {
     text-align: center;
     margin-right: 2rem;
     margin-top: 2rem;
     opacity: 0.7;
+    flex-shrink: 0;
   }
   .filter:hover {
     opacity: 1;
@@ -20,6 +13,8 @@
   }
   .filter p {
     font-size: 0.8rem;
+    margin-bottom: 0;
+    white-space: nowrap;
   }
   .tax-info {
     display: none;
@@ -32,61 +27,179 @@
     margin-left: 5rem;
     display: flex;
     align-items: center;
+    flex-shrink: 0;
+  }
+
+  /* ---------- Filters bar (desktop) ---------- */
+  #filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .first {
+    margin-left: 3.5rem;
+  }
+
+  /* Row that holds the toggle button + tax switch on mobile */
+  .filter-toggle-bar {
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.75rem 1rem;
+  }
+  .filter-toggle-btn {
+    border: 1px solid #ddd;
+    border-radius: 0.75rem;
+    background: #fff;
+    padding: 0.5rem 0.9rem;
+  }
+  .filter-toggle-btn:hover {
+    background: #f7f7f7;
+  }
+
+  /* ---------- Responsive breakpoints ---------- */
+
+  @media (max-width: 991px) {
+    .filter-toggle-bar {
+      display: flex;
+    }
+    /* hide the desktop tax-toggle that lives inside #filters on mobile,
+       since we show a mobile-specific one in the toggle bar instead */
+    #filters .tax-toggle {
+      display: none;
+    }
+    #filters {
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      padding: 0 1rem 1rem 1rem;
+    }
+    #filters::-webkit-scrollbar {
+      display: none;
+    }
+    .first {
+      margin-left: 0;
+    }
+    .filter {
+      margin-right: 1.5rem;
+      margin-top: 0.5rem;
+    }
+  }
+
+  @media (max-width: 576px) {
+    .filter i {
+      font-size: 0.9rem;
+    }
+    .filter p {
+      font-size: 0.7rem;
+    }
+    .filter-toggle-bar .tax-toggle {
+      height: 2.75rem;
+      padding: 0.6rem;
+      margin-left: 0;
+    }
+    .filter-toggle-bar .tax-toggle label {
+      font-size: 0.75rem;
+    }
+  }
+
+  /* Force the collapse panel open on lg+ regardless of toggle state */
+  @media (min-width: 992px) {
+    #filtersCollapse {
+      display: block !important;
+    }
+    .filter-toggle-bar {
+      display: none !important;
+    }
   }
 </style>
 <body>
-  <div id="filters">
-    <div class="filter first">
-      <div><i class="fa-solid fa-fire"></i></div>
-      <p>Trending</p>
-    </div>
-    <div class="filter">
-      <div><i class="fa-solid fa-bed"></i></div>
-      <p>Room</p>
-    </div>
-    <div class="filter">
-      <div><i class="fa-solid fa-mountain-city"></i></div>
-      <p>Iconic cities</p>
-    </div>
-    <div class="filter">
-      <div><i class="fa-solid fa-mountain"></i></div>
-      <p>Mountains</p>
-    </div>
-    <div class="filter">
-      <div><i class="fa-brands fa-fort-awesome"></i></div>
-      <p>Castles</p>
-    </div>
-    <div class="filter">
-      <div><i class="fa-solid fa-ship"></i></div>
-      <p>Boats</p>
-    </div>
-    <div class="filter">
-      <div><i class="fa-solid fa-person-swimming"></i></div>
-      <p>Amazing pools</p>
-    </div>
-    <div class="filter">
-      <div><i class="fa-solid fa-campground"></i></div>
-      <p>Camping</p>
-    </div>
-    <div class="filter">
-      <div><i class="fa-solid fa-cow"></i></div>
-      <p>Farms</p>
-    </div>
-    <div class="filter">
-      <div><i class="fa-regular fa-snowflake"></i></div>
-      <p>Arctic</p>
-    </div>
+  <!-- Mobile-only bar: hamburger toggle + tax switch, always visible -->
+  <div class="filter-toggle-bar">
+    <button
+      class="filter-toggle-btn"
+      type="button"
+      data-bs-toggle="collapse"
+      data-bs-target="#filtersCollapse"
+      aria-expanded="false"
+      aria-controls="filtersCollapse"
+    >
+      <i class="fa-solid fa-bars"></i>
+    </button>
+
     <div class="tax-toggle">
       <div class="form-check-reverse form-switch">
         <input
           class="form-check-input"
           type="checkbox"
           role="switch"
-          id="switchCheckDefault"
+          id="switchCheckMobile"
         />
-        <label class="form-check-label" for="switchCheckDefault"
+        <label class="form-check-label" for="switchCheckMobile"
           >Display total after taxes</label
         >
+      </div>
+    </div>
+  </div>
+
+  <!-- Collapsible filters (icons only, no tax toggle inside) -->
+  <div class="collapse" id="filtersCollapse">
+    <div id="filters">
+      <div class="filter first">
+        <div><i class="fa-solid fa-fire"></i></div>
+        <p>Trending</p>
+      </div>
+      <div class="filter">
+        <div><i class="fa-solid fa-bed"></i></div>
+        <p>Room</p>
+      </div>
+      <div class="filter">
+        <div><i class="fa-solid fa-mountain-city"></i></div>
+        <p>Iconic cities</p>
+      </div>
+      <div class="filter">
+        <div><i class="fa-solid fa-mountain"></i></div>
+        <p>Mountains</p>
+      </div>
+      <div class="filter">
+        <div><i class="fa-brands fa-fort-awesome"></i></div>
+        <p>Castles</p>
+      </div>
+      <div class="filter">
+        <div><i class="fa-solid fa-ship"></i></div>
+        <p>Boats</p>
+      </div>
+      <div class="filter">
+        <div><i class="fa-solid fa-person-swimming"></i></div>
+        <p>Amazing pools</p>
+      </div>
+      <div class="filter">
+        <div><i class="fa-solid fa-campground"></i></div>
+        <p>Camping</p>
+      </div>
+      <div class="filter">
+        <div><i class="fa-solid fa-cow"></i></div>
+        <p>Farms</p>
+      </div>
+      <div class="filter">
+        <div><i class="fa-regular fa-snowflake"></i></div>
+        <p>Arctic</p>
+      </div>
+
+      <!-- Desktop-only tax toggle (inline with filters, hidden on mobile via CSS) -->
+      <div class="tax-toggle">
+        <div class="form-check-reverse form-switch">
+          <input
+            class="form-check-input"
+            type="checkbox"
+            role="switch"
+            id="switchCheckDefault"
+          />
+          <label class="form-check-label" for="switchCheckDefault"
+            >Display total after taxes</label
+          >
+        </div>
       </div>
     </div>
   </div>
@@ -116,15 +229,21 @@
 </body>
 
 <script>
-  let taxSwitch = document.getElementById("switchCheckDefault");
-  taxSwitch.addEventListener("click", () => {
-    let taxInfo = document.getElementsByClassName("tax-info");
-    for (info of taxInfo) {
-      if (info.style.display != "inline") {
-        info.style.display = "inline";
-      } else {
-        info.style.display = "none";
+  // Handles BOTH the desktop and mobile tax switches
+  let taxSwitches = document.querySelectorAll(
+    "#switchCheckDefault, #switchCheckMobile"
+  );
+  taxSwitches.forEach((sw) => {
+    sw.addEventListener("click", (e) => {
+      let taxInfo = document.getElementsByClassName("tax-info");
+      let isChecked = e.target.checked;
+
+      // keep both switches in sync
+      taxSwitches.forEach((other) => (other.checked = isChecked));
+
+      for (info of taxInfo) {
+        info.style.display = isChecked ? "inline" : "none";
       }
-    }
+    });
   });
 </script>
