@@ -98,6 +98,13 @@ app.use((req, res, next) => {
 app.get("/", (req, res) => {
   res.redirect("/listings");
 });
+router.get("/health", (req, res) => {
+  res.status(200).json({
+    status: "ok",
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime(),
+  });
+});
 
 app.use("/listings", listingRouter);
 app.use("/listings/:id/reviews", reviewRouter);
